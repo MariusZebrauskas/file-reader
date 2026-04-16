@@ -1,0 +1,16 @@
+{
+  "name": "file-reader",
+  "private": true,
+  "packageManager": "pnpm@9.15.3",
+  "scripts": {
+    "dev:all": "concurrently -k -n php,vite -c cyan,magenta \"pnpm php:dev\" \"pnpm dev\"",
+    "dev": "pnpm --filter web dev",
+    "build": "pnpm --filter web build",
+    "lint": "pnpm --filter web lint",
+    "preview": "pnpm --filter web preview",
+    "php:dev": "php -S 127.0.0.1:8888 -t app/backend/public app/backend/public/router.php"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

@@ -1,0 +1,151 @@
+.shell {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.hdr h1 {
+  margin: 0 0 0.25rem;
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  font-weight: 600;
+}
+
+.lede {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.panel {
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 1rem 1.25rem;
+}
+
+.panel h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.tag {
+  margin: 0;
+  font-weight: 600;
+}
+
+.tag--ok {
+  color: var(--ok);
+}
+
+.tag--err {
+  color: var(--err);
+}
+
+.tag--loading {
+  color: var(--loading);
+}
+
+.hint {
+  margin: 0 0 0.75rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.drop {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  padding: 1.25rem;
+  border: 2px dashed var(--border);
+  border-radius: 0.5rem;
+  background: color-mix(in srgb, var(--border) 12%, transparent);
+}
+
+.drop--on {
+  border-color: var(--ok);
+  background: color-mix(in srgb, var(--ok) 14%, transparent);
+}
+
+.pick {
+  color: var(--ok);
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.pick:hover {
+  text-decoration-thickness: 2px;
+}
+
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.out {
+  margin-top: 1rem;
+}
+
+.meta {
+  margin: 0 0 0.5rem;
+  font-size: 0.9rem;
+}
+
+.meta code {
+  font-size: 0.85em;
+  padding: 0.15em 0.35em;
+  border-radius: 0.25rem;
+  background: color-mix(in srgb, var(--border) 40%, transparent);
+}
+
+.errs {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: var(--err);
+  font-weight: 500;
+}
+
+.table-wrap {
+  margin-top: 0.75rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 0.35rem;
+  border: 1px solid var(--border);
+}
+
+.grid {
+  width: 100%;
+  min-width: 16rem;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.grid th,
+.grid td {
+  border-bottom: 1px solid var(--border);
+  padding: 0.5rem 0.65rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.grid th {
+  background: color-mix(in srgb, var(--border) 35%, transparent);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.grid tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.grid tbody tr:nth-child(even) {
+  background: color-mix(in srgb, var(--border) 10%, transparent);
+}
