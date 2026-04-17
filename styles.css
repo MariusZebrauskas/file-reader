@@ -33,6 +33,10 @@ form {
   border-radius: 10px;
   grid-template-columns: 1fr 2fr;
 }
+label {
+  display: flex;
+  margin-bottom: 9px;
+}
 .drop-area {
   position: relative;
   min-height: 120px;
