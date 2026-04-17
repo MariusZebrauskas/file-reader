@@ -35,25 +35,40 @@ form {
 }
 .drop-area {
   position: relative;
-  border: 2px dashed red;
+  min-height: 120px;
+  margin: 14px 14px 14px 0;
+  border: 2px dashed #9ca3af;
+  border-radius: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
+  color: #6b7280;
 }
 
-.file-input {
-  background: rgba(255, 85, 0, 0.052);
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border: 1xp solid red;
-  opacity: 0;
+.drop-area.drop-over {
+  border-color: #2563eb;
+  background: #eff6ff;
+  color: #1e40af;
 }
 
 .file-input-area {
   padding: 14px;
+}
+
+.file-picker {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.file-picker input[type="file"] {
+  color: transparent;
+}
+
+.file-name-display {
+  color: #111827;
+  font-size: 0.95rem;
 }
 
 button {

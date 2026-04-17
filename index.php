@@ -65,17 +65,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <main class="container">
     <h1>Program - Read from file</h1>
     <p class="help">Supported formats: .<?= h(implode(', .', $extensions)) ?></p>
-    <form method="post" enctype="multipart/form-data">
+    <form id="upload-form" method="post" enctype="multipart/form-data">
         <div class="file-input-area">
-
             <label for="file">Select a file (CSV, XML, JSON)</label>
-            <input id="file" name="file" type="file" required accept=".csv,.xml,.json">
-            <button type="submit">Read</button>
+            <div class="file-picker">
+                <input id="file" name="file" type="file" required accept=".csv,.xml,.json">
+                <span id="file-name-display" class="file-name-display"><?= $fileName !== '' ? h($fileName) : 'No file chosen' ?></span>
+            </div>
         </div>
-        <div class="drop-area">
-            <label for="file">Drop area</label>
-            <input class="file-input" id="file" name="file" type="file" required accept=".csv,.xml,.json">
-        </div>
+        <div class="drop-area">Drop file here</div>
     </form>
     <?php if (count($errors) > 0) { ?>
         <div class="errors">
@@ -113,5 +111,62 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </section>
     <?php } ?>
 </main>
+<script>
+(function () {
+    const form = document.getElementById('upload-form');
+    const input = document.getElementById('file');
+    const drop = document.querySelector('.drop-area');
+    const display = document.getElementById('file-name-display');
+    if (!form || !input || !drop) {
+        return;
+    }
+    const syncName = function () {
+        if (!display) {
+            return;
+        }
+        display.textContent = input.files.length ? input.files[0].name : 'No file chosen';
+    };
+    let viaDrop = false;
+    input.addEventListener('change', function () {
+        syncName();
+        if (!input.files.length) {
+            return;
+        }
+        if (viaDrop) {
+            return;
+        }
+        form.requestSubmit();
+    });
+    drop.addEventListener('dragenter', function (e) {
+        e.preventDefault();
+        drop.classList.add('drop-over');
+    });
+    drop.addEventListener('dragleave', function (e) {
+        const t = e.relatedTarget;
+        if (!t || !drop.contains(t)) {
+            drop.classList.remove('drop-over');
+        }
+    });
+    drop.addEventListener('dragover', function (e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'copy';
+    });
+    drop.addEventListener('drop', function (e) {
+        e.preventDefault();
+        drop.classList.remove('drop-over');
+        const list = e.dataTransfer.files;
+        if (!list.length) {
+            return;
+        }
+        const dt = new DataTransfer();
+        dt.items.add(list[0]);
+        viaDrop = true;
+        input.files = dt.files;
+        viaDrop = false;
+        syncName();
+        form.requestSubmit();
+    });
+})();
+</script>
 </body>
 </html>
