@@ -65,10 +65,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <main class="container">
     <h1>Program - Read from file</h1>
     <p class="help">Supported formats: .<?= h(implode(', .', $extensions)) ?></p>
-    <form class="upload" method="post" enctype="multipart/form-data">
-        <label for="file">Select a file (CSV, XML, JSON)</label>
-        <input id="file" name="file" type="file" required accept=".csv,.xml,.json">
-        <button type="submit">Read</button>
+    <form method="post" enctype="multipart/form-data">
+        <div class="file-input-area">
+
+            <label for="file">Select a file (CSV, XML, JSON)</label>
+            <input id="file" name="file" type="file" required accept=".csv,.xml,.json">
+            <button type="submit">Read</button>
+        </div>
+        <div class="drop-area">
+            <label for="file">Drop area</label>
+            <input class="file-input" id="file" name="file" type="file" required accept=".csv,.xml,.json">
+        </div>
     </form>
     <?php if (count($errors) > 0) { ?>
         <div class="errors">
