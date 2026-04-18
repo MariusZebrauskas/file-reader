@@ -6,11 +6,13 @@ require_once __DIR__ . '/bootstrap.php';
 
 use App\Lib\ParserRegistry;
 
+// Escape text for safe HTML output (XSS).
 function h(string $value): string
 {
     return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
 
+// Page state: defaults for GET; filled on successful POST parse.
 $errors = [];
 $columns = [];
 $rows = [];
@@ -19,6 +21,7 @@ $format = '';
 $maxBytes = 2 * 1024 * 1024; // 2 MiB (~2 MB)
 $parsers = ParserRegistry::parsers();
 $extensions = ParserRegistry::allowedExtensions($parsers);
+// Upload form: validate $_FILES, size cap, extension, then parse into columns/rows.
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!isset($_FILES['file'])) {
         $errors[] = 'No file was uploaded.';
@@ -35,6 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             if (count($errors) === 0) {
                 $fileName = basename((string) $file['name']);
+                // Pick parser from extension; parse temp path PHP stored on disk.
                 $parser = ParserRegistry::resolve($fileName, $parsers);
                 if ($parser === null) {
                     $errors[] = 'Unsupported format. Allowed: .' . implode(', .', $extensions);
@@ -113,6 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </main>
 <script>
 (function () {
+    // Upload UI: pick file or drop it, then auto-submit the form.
     const form = document.getElementById('upload-form');
     const input = document.getElementById('file');
     const drop = document.querySelector('.drop-area');
@@ -126,6 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         display.textContent = input.files.length ? input.files[0].name : 'No file chosen';
     };
+    // While assigning files from a drop, input may fire "change"; skip duplicate submit (drop handler submits).
     let viaDrop = false;
     input.addEventListener('change', function () {
         syncName();
@@ -143,6 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     });
     drop.addEventListener('dragleave', function (e) {
         const t = e.relatedTarget;
+        // Only un-highlight when leaving the drop zone (not when entering a child).
         if (!t || !drop.contains(t)) {
             drop.classList.remove('drop-over');
         }
@@ -158,6 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!list.length) {
             return;
         }
+        // Programmatically set the hidden file input to the dropped file (first file only).
         const dt = new DataTransfer();
         dt.items.add(list[0]);
         viaDrop = true;
