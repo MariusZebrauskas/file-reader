@@ -38,8 +38,6 @@ label {
   margin-bottom: 9px;
 }
 .drop-area {
-  position: relative;
-  min-height: 120px;
   margin: 14px 14px 14px 0;
   border: 2px dashed #9ca3af;
   border-radius: 8px;
@@ -47,6 +45,9 @@ label {
   justify-content: center;
   align-items: center;
   color: #6b7280;
+  @media (min-width: 768px) {
+    min-height: 100px;
+  }
 }
 
 .file-input-area {
@@ -55,7 +56,6 @@ label {
 
 .file-picker {
   display: flex;
-  align-items: center;
   flex-wrap: wrap;
   gap: 8px;
 }
