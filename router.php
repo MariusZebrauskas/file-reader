@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 // Path only (no ?query); built-in server passes every request through this script first.
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?: '/';
 $path = __DIR__ . $uri;
