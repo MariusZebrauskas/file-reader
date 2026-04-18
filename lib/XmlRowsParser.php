@@ -7,9 +7,18 @@ namespace App\Lib;
 use DOMDocument;
 use DOMElement;
 
-/** XML table parser (class is not named XmlParser to avoid clashing with PHP's XMLParser). */
+/**
+ * XML table parser: repeated child elements of root are rows; each row's child elements are columns.
+ * (Class name avoids PHP's built-in XMLParser.)
+ */
 final class XmlRowsParser extends FormatParser
 {
+    /**
+     * Reads XML from disk; root's homogeneous child tags are rows, sub-tags are column names.
+     *
+     * @param string $path Absolute path to readable XML file
+     * @return array{ok: true, columns: list<string>, rows: list<list<string>>}|array{ok: false, errors: list<string>}
+     */
     public function parse(string $path): array
     {
         $raw = file_get_contents($path);
@@ -72,7 +81,12 @@ final class XmlRowsParser extends FormatParser
         return ['ok' => true, 'columns' => $columns, 'rows' => $rows];
     }
 
-    /** @return list<DOMElement> */
+    /**
+     * Direct child elements only (skips text/comment nodes).
+     *
+     * @param DOMElement $el Parent DOM node
+     * @return list<DOMElement>
+     */
     private static function childElements(DOMElement $el): array
     {
         $out = [];

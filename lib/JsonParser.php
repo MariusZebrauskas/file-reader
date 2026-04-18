@@ -11,6 +11,12 @@ use JsonException;
  */
 final class JsonParser extends FormatParser
 {
+    /**
+     * Reads JSON array of objects; first object keys define columns, each row aligned to that schema.
+     *
+     * @param string $path Absolute path to readable UTF-8 JSON file
+     * @return array{ok: true, columns: list<string>, rows: list<list<string>>}|array{ok: false, errors: list<string>}
+     */
     public function parse(string $path): array
     {
         $raw = file_get_contents($path);
@@ -55,6 +61,12 @@ final class JsonParser extends FormatParser
         return ['ok' => true, 'columns' => $columns, 'rows' => $rows];
     }
 
+    /**
+     * Normalizes a JSON scalar or structure to a display string for the table cell.
+     *
+     * @param mixed $v Value from decoded JSON
+     * @return string Cell text
+     */
     private static function cell(mixed $v): string
     {
         if ($v === null) {

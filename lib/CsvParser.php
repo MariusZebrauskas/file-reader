@@ -9,6 +9,12 @@ namespace App\Lib;
  */
 final class CsvParser extends FormatParser
 {
+    /**
+     * Reads CSV from disk: header row defines columns, following non-empty lines are data rows.
+     *
+     * @param string $path Absolute path to readable CSV file
+     * @return array{ok: true, columns: list<string>, rows: list<list<string>>}|array{ok: false, errors: list<string>}
+     */
     public function parse(string $path): array
     {
         $raw = file_get_contents($path);
@@ -49,7 +55,12 @@ final class CsvParser extends FormatParser
         return ['ok' => true, 'columns' => $headers, 'rows' => $rows];
     }
 
-    /** @return list<string> */
+    /**
+     * Parses one CSV line with optional single-quoted or double-quoted fields; trims cell values.
+     *
+     * @param string $line Single physical line without trailing newline
+     * @return list<string>
+     */
     private static function parseRow(string $line): array
     {
         $fields = [];

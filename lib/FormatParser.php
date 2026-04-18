@@ -14,18 +14,30 @@ abstract class FormatParser
     /** @var list<string> */
     private readonly array $extensions;
 
+    /**
+     * @param string $name Format id and sole file extension (e.g. "csv")
+     */
     public function __construct(string $name)
     {
         $this->name = $name;
         $this->extensions = [$name];
     }
 
+    /**
+     * Stable format identifier (same as configured name / extension).
+     *
+     * @return string
+     */
     public function id(): string
     {
         return $this->name;
     }
 
-    /** @return list<string> */
+    /**
+     * File extensions this parser accepts (one entry, same as id).
+     *
+     * @return list<string>
+     */
     public function extensions(): array
     {
         return $this->extensions;

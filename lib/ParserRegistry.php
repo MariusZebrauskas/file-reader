@@ -9,7 +9,11 @@ namespace App\Lib;
  */
 final class ParserRegistry
 {
-    /** @return list<FormatParser> */
+    /**
+     * Instantiates all parsers declared in config/formats.php (project root).
+     *
+     * @return list<FormatParser>
+     */
     public static function parsers(): array
     {
         $rows = require dirname(__DIR__) . '/config/formats.php';
@@ -22,7 +26,13 @@ final class ParserRegistry
         return $parsers;
     }
 
-    /** @param list<FormatParser> $parsers */
+    /**
+     * Picks the parser whose extension list matches the file's extension (case-insensitive).
+     *
+     * @param string $fileName Original client file name (basename used for extension)
+     * @param list<FormatParser> $parsers Parsers from {@see self::parsers()}
+     * @return FormatParser|null Matching parser or null if extension unsupported
+     */
     public static function resolve(string $fileName, array $parsers): ?FormatParser
     {
         $ext = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
@@ -35,7 +45,12 @@ final class ParserRegistry
         return null;
     }
 
-    /** @param list<FormatParser> $parsers */
+    /**
+     * Union of all extensions accepted by the given parsers (unique, order not guaranteed).
+     *
+     * @param list<FormatParser> $parsers Parsers from {@see self::parsers()}
+     * @return list<string>
+     */
     public static function allowedExtensions(array $parsers): array
     {
         $all = [];

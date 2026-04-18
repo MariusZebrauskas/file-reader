@@ -2,17 +2,27 @@
 
 declare(strict_types=1);
 
+/**
+ * Front script: registers autoloading, handles file upload POST, renders HTML table or errors.
+ */
 require_once __DIR__ . '/bootstrap.php';
 
 use App\Lib\ParserRegistry;
 
-// Escape text for safe HTML output (XSS).
+/**
+ * Escapes text for safe insertion into HTML (mitigates XSS).
+ *
+ * @param string $value Raw UTF-8 string
+ * @return string HTML-escaped string
+ */
 function h(string $value): string
 {
     return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
 
-// Page state: defaults for GET; filled on successful POST parse.
+/*
+ * Page state (GET default; POST fills from parser on success, or error strings on failure).
+ */
 $errors = [];
 $columns = [];
 $rows = [];
@@ -21,7 +31,10 @@ $format = '';
 $maxBytes = 2 * 1024 * 1024; // 2 MiB (~2 MB)
 $parsers = ParserRegistry::parsers();
 $extensions = ParserRegistry::allowedExtensions($parsers);
-// Upload form: validate $_FILES, size cap, extension, then parse into columns/rows.
+
+/*
+ * POST: validate $_FILES (presence, PHP upload error, size), extension vs registry, then parse temp path.
+ */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!isset($_FILES['file'])) {
         $errors[] = 'No file was uploaded.';
