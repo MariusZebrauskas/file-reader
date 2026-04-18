@@ -2,6 +2,6 @@
   "name": "file-reader",
   "private": true,
   "scripts": {
-    "php:dev": "php -d xdebug.mode=debug -d xdebug.start_with_request=yes -S 127.0.0.1:8888 -t . router.php"
+    "php:dev": "node scripts/php-dev.cjs"
   }
 }
