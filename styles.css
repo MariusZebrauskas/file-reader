@@ -49,12 +49,6 @@ label {
   color: #6b7280;
 }
 
-.drop-area.drop-over {
-  border-color: #2563eb;
-  background: #eff6ff;
-  color: #1e40af;
-}
-
 .file-input-area {
   padding: 14px;
 }

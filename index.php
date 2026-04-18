@@ -117,42 +117,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </main>
 <script>
 (function () {
-    // Upload UI: pick file or drop it, then auto-submit the form.
     const form = document.getElementById('upload-form');
     const input = document.getElementById('file');
     const drop = document.querySelector('.drop-area');
     const display = document.getElementById('file-name-display');
-    if (!form || !input || !drop) {
+    if (!form || !input || !drop || !display) {
         return;
     }
-    const syncName = function () {
-        if (!display) {
-            return;
-        }
+    const syncLabel = function () {
         display.textContent = input.files.length ? input.files[0].name : 'No file chosen';
     };
-    // While assigning files from a drop, input may fire "change"; skip duplicate submit (drop handler submits).
     let viaDrop = false;
     input.addEventListener('change', function () {
-        syncName();
-        if (!input.files.length) {
-            return;
-        }
-        if (viaDrop) {
+        syncLabel();
+        if (!input.files.length || viaDrop) {
             return;
         }
         form.requestSubmit();
-    });
-    drop.addEventListener('dragenter', function (e) {
-        e.preventDefault();
-        drop.classList.add('drop-over');
-    });
-    drop.addEventListener('dragleave', function (e) {
-        const t = e.relatedTarget;
-        // Only un-highlight when leaving the drop zone (not when entering a child).
-        if (!t || !drop.contains(t)) {
-            drop.classList.remove('drop-over');
-        }
     });
     drop.addEventListener('dragover', function (e) {
         e.preventDefault();
@@ -160,18 +141,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     });
     drop.addEventListener('drop', function (e) {
         e.preventDefault();
-        drop.classList.remove('drop-over');
         const list = e.dataTransfer.files;
         if (!list.length) {
             return;
         }
-        // Programmatically set the hidden file input to the dropped file (first file only).
         const dt = new DataTransfer();
         dt.items.add(list[0]);
         viaDrop = true;
         input.files = dt.files;
         viaDrop = false;
-        syncName();
+        syncLabel();
         form.requestSubmit();
     });
 })();
