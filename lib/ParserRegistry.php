@@ -12,10 +12,11 @@ final class ParserRegistry
     /** @return list<FormatParser> */
     public static function parsers(): array
     {
-        $classes = require dirname(__DIR__) . '/config/formats.php';
+        $rows = require dirname(__DIR__) . '/config/formats.php';
         $parsers = [];
-        foreach ($classes as $class) {
-            $parsers[] = new $class();
+        foreach ($rows as $row) {
+            $class = $row[0];
+            $parsers[] = new $class($row[1]);
         }
 
         return $parsers;

@@ -3,17 +3,17 @@
 declare(strict_types=1);
 
 use App\Lib\CsvParser;
+use App\Lib\FormatParser;
 use App\Lib\JsonParser;
 use App\Lib\XmlRowsParser;
 
 /**
- * Registered parser classes.
- * Add a new parser class here for extensibility.
+ * Each row: [parser class, format name] — extensions are [name] inside {@see FormatParser}.
  *
- * @return list<class-string>
+ * @return list<array{0: class-string<FormatParser>, 1: string}>
  */
 return [
-    CsvParser::class,
-    JsonParser::class,
-    XmlRowsParser::class,
+    [CsvParser::class, 'csv'],
+    [JsonParser::class, 'json'],
+    [XmlRowsParser::class, 'xml'],
 ];

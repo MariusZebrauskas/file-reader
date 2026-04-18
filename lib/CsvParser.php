@@ -7,18 +7,8 @@ namespace App\Lib;
 /**
  * CSV parser implementation.
  */
-final class CsvParser implements FormatParser
+final class CsvParser extends FormatParser
 {
-    public function id(): string
-    {
-        return 'csv';
-    }
-
-    public function extensions(): array
-    {
-        return ['csv'];
-    }
-
     public function parse(string $path): array
     {
         $raw = file_get_contents($path);

@@ -5,17 +5,34 @@ declare(strict_types=1);
 namespace App\Lib;
 
 /**
- * Parser contract for tabular file formats.
+ * Base parser: one string from config (e.g. "csv"); extensions become [that string].
  */
-interface FormatParser
+abstract class FormatParser
 {
-    public function id(): string;
+    private readonly string $name;
+
+    /** @var list<string> */
+    private readonly array $extensions;
+
+    public function __construct(string $name)
+    {
+        $this->name = $name;
+        $this->extensions = [$name];
+    }
+
+    public function id(): string
+    {
+        return $this->name;
+    }
 
     /** @return list<string> */
-    public function extensions(): array;
+    public function extensions(): array
+    {
+        return $this->extensions;
+    }
 
     /**
      * @return array{ok: true, columns: list<string>, rows: list<list<string>>}|array{ok: false, errors: list<string>}
      */
-    public function parse(string $path): array;
+    abstract public function parse(string $path): array;
 }

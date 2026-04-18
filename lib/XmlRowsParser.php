@@ -8,18 +8,8 @@ use DOMDocument;
 use DOMElement;
 
 /** XML table parser (class is not named XmlParser to avoid clashing with PHP's XMLParser). */
-final class XmlRowsParser implements FormatParser
+final class XmlRowsParser extends FormatParser
 {
-    public function id(): string
-    {
-        return 'xml';
-    }
-
-    public function extensions(): array
-    {
-        return ['xml'];
-    }
-
     public function parse(string $path): array
     {
         $raw = file_get_contents($path);

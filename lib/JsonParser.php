@@ -9,18 +9,8 @@ use JsonException;
 /**
  * JSON parser implementation.
  */
-final class JsonParser implements FormatParser
+final class JsonParser extends FormatParser
 {
-    public function id(): string
-    {
-        return 'json';
-    }
-
-    public function extensions(): array
-    {
-        return ['json'];
-    }
-
     public function parse(string $path): array
     {
         $raw = file_get_contents($path);
