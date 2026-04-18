@@ -71,9 +71,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <p class="help">Supported formats: .<?= h(implode(', .', $extensions)) ?></p>
     <form id="upload-form" method="post" enctype="multipart/form-data">
         <div class="file-input-area">
-            <label for="file">Select a file (CSV, XML, JSON)</label>
+            <label for="file">Select a file (<?= h(implode(', ', array_map('strtoupper', $extensions))) ?>)</label>
             <div class="file-picker">
-                <input id="file" name="file" type="file" required accept=".csv,.xml,.json">
+                <input id="file" name="file" type="file" required accept="<?= h(implode(',', array_map(static fn (string $e): string => '.' . $e, $extensions))) ?>">
                 <span id="file-name-display" class="file-name-display"><?= $fileName !== '' ? h($fileName) : 'No file chosen' ?></span>
             </div>
         </div>
