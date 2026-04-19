@@ -7,9 +7,9 @@ pnpm i
 pnpm php:dev
 ```
 
-When the server is running, the terminal shows:
+CLI shows:
 
 - local URL and,
 - LAN URL for other devices on the same network. (if have pnpm)
 
-You need **PHP** (CLI) and **pnpm** on your machine.
+You need **PHP** and **pnpm** on your machine.
