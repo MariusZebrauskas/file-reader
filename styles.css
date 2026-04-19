@@ -51,6 +51,8 @@ form {
   font-size: 0.8125rem;
   @media (min-width: 768px) {
     display: flex;
+    flex-direction: column;
+    gap: 6px;
     margin: 8px 8px 8px 0;
     border: 1px dashed #9ca3af;
     border-radius: 6px;
@@ -59,6 +61,16 @@ form {
     color: #6b7280;
     min-height: 72px;
   }
+}
+
+.drop-area__text {
+  line-height: 1.2;
+}
+
+.icon-drop {
+  width: 22px;
+  height: 22px;
+  background: url("/public/svg/drop.svg") center / contain no-repeat;
 }
 
 .file-input-area {

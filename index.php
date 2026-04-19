@@ -96,7 +96,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <p class="file-max">Maximum file size: <?= h($maxSizeLabel) ?>.</p>
             <input id="file" name="file" type="file" class="file-input-overlay" required accept="<?= h(implode(',', array_map(static fn (string $e): string => '.' . $e, $extensions))) ?>">
         </label>
-        <div class="drop-area">Drop file here</div>
+        <div class="drop-area">
+            <i class="icon icon-drop" aria-hidden="true"></i>
+            <span class="drop-area__text">Drop file here</span>
+        </div>
     </form>
     <?php if (count($errors) > 0) { ?>
         <div class="errors">
