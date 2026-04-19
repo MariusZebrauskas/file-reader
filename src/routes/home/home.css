@@ -105,6 +105,11 @@ form {
       color 0.12s ease;
   }
 
+  /* Keep drag target on #upload-drop so dragleave does not fire when moving over icon/text. */
+  #upload-drop * {
+    pointer-events: none;
+  }
+
   #upload-drop.is-drag-over {
     background-color: #eff6ff;
     border-color: var(--color-accent);
