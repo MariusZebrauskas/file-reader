@@ -6,6 +6,7 @@ declare(strict_types=1);
  * Home route: upload UI, POST handling, table preview.
  */
 require_once dirname(__DIR__, 3) . '/bootstrap.php';
+require_once __DIR__ . '/helpers/upload_flash.php';
 
 use App\Lib\FormatParser;
 use App\Lib\ParserRegistry;
@@ -18,15 +19,12 @@ function h(string $value): string
     return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
 
-$errors = [];
-$columns = [];
-$rows = [];
-$fileName = '';
-$format = '';
 $maxBytes = FormatParser::$maxBytes;
 $maxMb = (string) (int) ($maxBytes / (1024 * 1024)) . ' MB';
 $parsers = ParserRegistry::parsers();
 $extensions = ParserRegistry::allowedExtensions($parsers);
+
+[$errors, $columns, $rows, $fileName, $format] = uploadFlash();
 
 if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
     if (!isset($_FILES['file'])) {
@@ -60,6 +58,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
             }
         }
     }
+    uploadFlash($errors, $columns, $rows, $fileName, $format);
 }
 ?>
 <!doctype html>
@@ -77,7 +76,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
         <h1>Program - Read from file</h1>
         <p>Supported formats: .<?= h(implode(', .', $extensions)) ?></p>
     </header>
-    <form id="upload-form" method="post" enctype="multipart/form-data">
+    <form id="upload-form" method="post" action="<?= h(request_path()) ?>" enctype="multipart/form-data">
         <div id="upload-pick">
             <span class="sr-only">Choose file. Formats: <?= h(implode(', ', array_map('strtoupper', $extensions))) ?>. Maximum size <?= h($maxMb) ?>.</span>
             <span>Select a file (<?= h(implode(', ', array_map('strtoupper', $extensions))) ?>)</span>
