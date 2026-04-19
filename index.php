@@ -7,6 +7,7 @@ declare(strict_types=1);
  */
 require_once __DIR__ . '/bootstrap.php';
 
+use App\Lib\FormatParser;
 use App\Lib\ParserRegistry;
 
 /**
@@ -28,8 +29,8 @@ $columns = [];
 $rows = [];
 $fileName = '';
 $format = '';
-$maxBytes = 2 * 1024 * 1024; // 2 MiB (~2 MB)
-$maxSizeLabel = (string) (int) ($maxBytes / (1024 * 1024)) . ' MB';
+$maxBytes = FormatParser::$maxBytes;
+$maxMb = (string) (int) ($maxBytes / (1024 * 1024)) . ' MB';
 $parsers = ParserRegistry::parsers();
 $extensions = ParserRegistry::allowedExtensions($parsers);
 
@@ -48,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $errors[] = 'File upload failed.';
             }
             if ((int) $file['size'] > $maxBytes) {
-                $errors[] = 'File is too large (max ' . $maxSizeLabel . ').';
+                $errors[] = 'The file is too big. Maximum allowed size is ' . $maxMb . '.';
             }
             if (count($errors) === 0) {
                 $fileName = basename((string) $file['name']);
@@ -85,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <p class="help">Supported formats: .<?= h(implode(', .', $extensions)) ?></p>
     <form id="upload-form" method="post" enctype="multipart/form-data">
         <label class="file-input-area">
-            <span class="sr-only">Choose file. Formats: <?= h(implode(', ', array_map('strtoupper', $extensions))) ?>. Maximum size <?= h($maxSizeLabel) ?>.</span>
+            <span class="sr-only">Choose file. Formats: <?= h(implode(', ', array_map('strtoupper', $extensions))) ?>. Maximum size <?= h($maxMb) ?>.</span>
             <span class="file-hint">Select a file (<?= h(implode(', ', array_map('strtoupper', $extensions))) ?>)</span>
             <div class="file-picker">
                 <span class="file-icon-wrap" aria-hidden="true">
@@ -93,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </span>
                 <span id="file-name-display" class="file-name-display"><?= $fileName !== '' ? h($fileName) : 'No file chosen' ?></span>
             </div>
-            <p class="file-max">Maximum file size: <?= h($maxSizeLabel) ?>.</p>
+            <p class="file-max">Maximum file size: <?= h($maxMb) ?>.</p>
             <input id="file" name="file" type="file" class="file-input-overlay" required accept="<?= h(implode(',', array_map(static fn (string $e): string => '.' . $e, $extensions))) ?>">
         </label>
         <div class="drop-area">

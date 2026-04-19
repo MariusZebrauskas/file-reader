@@ -9,6 +9,9 @@ namespace App\Lib;
  */
 abstract class FormatParser
 {
+    /** Maximum file size in bytes (upload validation and UI copy). */
+    public static int $maxBytes = 2 * 1024 * 1024;
+
     private readonly string $name;
 
     /** @var list<string> */
