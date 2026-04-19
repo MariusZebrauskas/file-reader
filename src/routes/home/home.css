@@ -86,39 +86,6 @@ form {
   font-size: 0.8125rem;
 }
 
-@media (min-width: 768px) {
-  #upload-drop {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin: 8px 8px 8px 0;
-    border: 1px dashed #9ca3af;
-    border-radius: 6px;
-    justify-content: center;
-    align-items: center;
-    color: var(--color-text-subtle);
-    min-height: 72px;
-    transition:
-      background-color 0.12s ease,
-      border-color 0.12s ease,
-      box-shadow 0.12s ease,
-      color 0.12s ease;
-  }
-
-  /* Keep drag target on #upload-drop so dragleave does not fire when moving over icon/text. */
-  #upload-drop * {
-    pointer-events: none;
-  }
-
-  #upload-drop.is-drag-over {
-    background-color: #eff6ff;
-    border-color: var(--color-accent);
-    border-style: solid;
-    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.28);
-    color: var(--color-text-muted);
-  }
-}
-
 #upload-drop > span {
   line-height: 1.2;
 }
@@ -169,4 +136,40 @@ form {
 
 #preview > div {
   overflow: auto;
+}
+td {
+  white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+  #upload-drop {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 8px 8px 8px 0;
+    border: 1px dashed #9ca3af;
+    border-radius: 6px;
+    justify-content: center;
+    align-items: center;
+    color: var(--color-text-subtle);
+    min-height: 72px;
+    transition:
+      background-color 0.12s ease,
+      border-color 0.12s ease,
+      box-shadow 0.12s ease,
+      color 0.12s ease;
+  }
+
+  /* Keep drag target on #upload-drop so dragleave does not fire when moving over icon/text. */
+  #upload-drop * {
+    pointer-events: none;
+  }
+
+  #upload-drop.is-drag-over {
+    background-color: #eff6ff;
+    border-color: var(--color-accent);
+    border-style: solid;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.28);
+    color: var(--color-text-muted);
+  }
 }
