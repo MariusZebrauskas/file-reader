@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Lib\CsvParser;
-use App\Lib\FormatParser;
 use App\Lib\JsonParser;
 use App\Lib\XmlRowsParser;
 
