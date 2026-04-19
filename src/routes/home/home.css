@@ -140,6 +140,9 @@ form {
 td {
   white-space: nowrap;
 }
+tr:hover {
+  background-color: var(--color-hover);
+}
 
 @media (min-width: 768px) {
   #upload-drop {
