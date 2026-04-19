@@ -85,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <h1>Program - Read from file</h1>
     <p class="help">Supported formats: .<?= h(implode(', .', $extensions)) ?></p>
     <form id="upload-form" method="post" enctype="multipart/form-data">
-        <label class="file-input-area">
+        <div class="file-input-area">
             <span class="sr-only">Choose file. Formats: <?= h(implode(', ', array_map('strtoupper', $extensions))) ?>. Maximum size <?= h($maxMb) ?>.</span>
             <span class="file-hint">Select a file (<?= h(implode(', ', array_map('strtoupper', $extensions))) ?>)</span>
             <div class="file-picker">
@@ -95,8 +95,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <span id="file-name-display" class="file-name-display"><?= $fileName !== '' ? h($fileName) : 'No file chosen' ?></span>
             </div>
             <p class="file-max">Maximum file size: <?= h($maxMb) ?>.</p>
-            <input id="file" name="file" type="file" class="file-input-overlay" required accept="<?= h(implode(',', array_map(static fn (string $e): string => '.' . $e, $extensions))) ?>">
-        </label>
+            <input id="file" name="file" type="file" class="sr-only" required accept="<?= h(implode(',', array_map(static fn (string $e): string => '.' . $e, $extensions))) ?>">
+        </div>
         <div class="drop-area">
             <i class="icon icon-drop" aria-hidden="true"></i>
             <span class="drop-area__text">Drop file here</span>
@@ -142,11 +142,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 (function () {
     const form = document.getElementById('upload-form');
     const input = document.getElementById('file');
+    const zone = document.querySelector('.file-input-area');
     const drop = document.querySelector('.drop-area');
     const display = document.getElementById('file-name-display');
-    if (!form || !input || !drop || !display) {
+    if (!form || !input || !zone || !drop || !display) {
         return;
     }
+    zone.addEventListener('click', function () {
+        input.click();
+    });
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(function (ev) {
+        zone.addEventListener(ev, function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (ev === 'dragover') {
+                e.dataTransfer.dropEffect = 'none';
+            }
+        });
+    });
     const syncLabel = function () {
         display.textContent = input.files.length ? input.files[0].name : 'No file chosen';
     };
