@@ -1,0 +1,154 @@
+main {
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding: var(--space-page);
+}
+
+header {
+  margin-bottom: 10px;
+}
+
+header h1 {
+  margin: 0 0 8px;
+  font-size: clamp(1.2rem, 2.5vw, 1.45rem);
+  color: var(--color-text);
+}
+
+header p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+form {
+  display: grid;
+  gap: 6px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  grid-template-columns: 1fr 1.2fr;
+}
+
+#upload-pick {
+  position: relative;
+  display: block;
+  padding: 10px 10px 8px;
+  cursor: pointer;
+}
+
+#upload-pick > span + span {
+  display: block;
+  margin-bottom: 9px;
+  color: var(--color-text-muted);
+}
+
+#upload-pick > div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+#upload-pick > div > span[aria-hidden="true"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #6b7280, #4b5563);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+  flex-shrink: 0;
+}
+
+#upload-pick:hover > div > span[aria-hidden="true"] {
+  filter: brightness(1.08);
+}
+
+#upload-pick:focus-within > div > span[aria-hidden="true"] {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+#file-name-display {
+  color: var(--color-text);
+  font-size: 0.95rem;
+}
+
+#upload-pick > p {
+  margin: 10px 0 0;
+  font-size: 0.85rem;
+  color: var(--color-text-subtle);
+}
+
+#upload-drop {
+  display: none;
+  font-size: 0.8125rem;
+}
+
+@media (min-width: 768px) {
+  #upload-drop {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 8px 8px 8px 0;
+    border: 1px dashed #9ca3af;
+    border-radius: 6px;
+    justify-content: center;
+    align-items: center;
+    color: var(--color-text-subtle);
+    min-height: 72px;
+  }
+}
+
+#upload-drop > span {
+  line-height: 1.2;
+}
+
+#upload-pick i {
+  display: block;
+  font-style: normal;
+  width: 14px;
+  height: 14px;
+  background: url("/public/svg/upload.svg") center / contain no-repeat;
+}
+
+#upload-drop i {
+  display: block;
+  font-style: normal;
+  width: 22px;
+  height: 22px;
+  background: url("/public/svg/drop.svg") center / contain no-repeat;
+}
+
+#errors {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-danger);
+  background: var(--color-danger-bg);
+  color: var(--color-danger-text);
+}
+
+#errors ul {
+  margin: 8px 0 0;
+  padding-left: 20px;
+}
+
+#preview {
+  margin-top: 16px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 14px;
+}
+
+#preview > p {
+  margin: 0 0 12px;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+#preview > div {
+  overflow: auto;
+}

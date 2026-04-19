@@ -3,27 +3,21 @@
 declare(strict_types=1);
 
 /**
- * Front script: registers autoloading, handles file upload POST, renders HTML table or errors.
+ * Home route: upload UI, POST handling, table preview.
  */
-require_once __DIR__ . '/bootstrap.php';
+require_once dirname(__DIR__, 3) . '/bootstrap.php';
 
 use App\Lib\FormatParser;
 use App\Lib\ParserRegistry;
 
 /**
- * Escapes text for safe insertion into HTML (mitigates XSS).
- *
  * @param string $value Raw UTF-8 string
- * @return string HTML-escaped string
  */
 function h(string $value): string
 {
     return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
 
-/*
- * Page state (GET default; POST fills from parser on success, or error strings on failure).
- */
 $errors = [];
 $columns = [];
 $rows = [];
@@ -34,10 +28,7 @@ $maxMb = (string) (int) ($maxBytes / (1024 * 1024)) . ' MB';
 $parsers = ParserRegistry::parsers();
 $extensions = ParserRegistry::allowedExtensions($parsers);
 
-/*
- * POST: validate $_FILES (presence, PHP upload error, size), extension vs registry, then parse temp path.
- */
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
     if (!isset($_FILES['file'])) {
         $errors[] = 'No file was uploaded.';
     } else {
@@ -53,7 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             if (count($errors) === 0) {
                 $fileName = basename((string) $file['name']);
-                // Pick parser from extension; parse temp path PHP stored on disk.
                 $parser = ParserRegistry::resolve($fileName, $parsers);
                 if ($parser === null) {
                     $errors[] = 'Unsupported format. Allowed: .' . implode(', .', $extensions);
@@ -78,32 +68,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Read from file</title>
-    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/public/css/global.css">
+    <link rel="stylesheet" href="/src/routes/home/home.css">
 </head>
 <body>
-<main class="container">
-    <h1>Program - Read from file</h1>
-    <p class="help">Supported formats: .<?= h(implode(', .', $extensions)) ?></p>
+<main>
+    <header>
+        <h1>Program - Read from file</h1>
+        <p>Supported formats: .<?= h(implode(', .', $extensions)) ?></p>
+    </header>
     <form id="upload-form" method="post" enctype="multipart/form-data">
-        <div class="file-input-area">
+        <div id="upload-pick">
             <span class="sr-only">Choose file. Formats: <?= h(implode(', ', array_map('strtoupper', $extensions))) ?>. Maximum size <?= h($maxMb) ?>.</span>
-            <span class="file-hint">Select a file (<?= h(implode(', ', array_map('strtoupper', $extensions))) ?>)</span>
-            <div class="file-picker">
-                <span class="file-icon-wrap" aria-hidden="true">
-                    <i class="icon icon-upload"></i>
-                </span>
-                <span id="file-name-display" class="file-name-display"><?= $fileName !== '' ? h($fileName) : 'No file chosen' ?></span>
+            <span>Select a file (<?= h(implode(', ', array_map('strtoupper', $extensions))) ?>)</span>
+            <div>
+                <span aria-hidden="true"><i></i></span>
+                <span id="file-name-display"><?= $fileName !== '' ? h($fileName) : 'No file chosen' ?></span>
             </div>
-            <p class="file-max">Maximum file size: <?= h($maxMb) ?>.</p>
+            <p>Maximum file size: <?= h($maxMb) ?>.</p>
             <input id="file" name="file" type="file" class="sr-only" required accept="<?= h(implode(',', array_map(static fn (string $e): string => '.' . $e, $extensions))) ?>">
         </div>
-        <div class="drop-area">
-            <i class="icon icon-drop" aria-hidden="true"></i>
-            <span class="drop-area__text">Drop file here</span>
-        </div>
+        <aside id="upload-drop">
+            <i aria-hidden="true"></i>
+            <span>Drop file here</span>
+        </aside>
     </form>
     <?php if (count($errors) > 0) { ?>
-        <div class="errors">
+        <div id="errors" role="alert">
             <strong>Errors:</strong>
             <ul>
                 <?php foreach ($errors as $error) { ?>
@@ -113,9 +104,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     <?php } ?>
     <?php if (count($rows) > 0) { ?>
-        <section class="result">
+        <section id="preview">
             <p><strong>File:</strong> <?= h($fileName) ?> | <strong>Format:</strong> <?= h(strtoupper($format)) ?></p>
-            <div class="table-wrap">
+            <div>
                 <table>
                     <thead>
                     <tr>
@@ -140,11 +131,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </main>
 <script>
 (function () {
-    const form = document.getElementById('upload-form');
-    const input = document.getElementById('file');
-    const zone = document.querySelector('.file-input-area');
-    const drop = document.querySelector('.drop-area');
-    const display = document.getElementById('file-name-display');
+    function byId(id) {
+        return document.getElementById(id);
+    }
+    const form = byId('upload-form');
+    const input = byId('file');
+    const zone = byId('upload-pick');
+    const drop = byId('upload-drop');
+    const display = byId('file-name-display');
     if (!form || !input || !zone || !drop || !display) {
         return;
     }
