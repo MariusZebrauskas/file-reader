@@ -11,9 +11,6 @@ require_once __DIR__ . '/helpers/upload_flash.php';
 use App\Lib\FormatParser;
 use App\Lib\ParserRegistry;
 
-/**
- * @param string $value Raw UTF-8 string
- */
 function h(string $value): string
 {
     return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
