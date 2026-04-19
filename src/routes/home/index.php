@@ -165,12 +165,23 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
         }
         form.requestSubmit();
     });
+
+    drop.addEventListener('dragenter', function (e) {
+        e.preventDefault();
+        drop.classList.add('is-drag-over');
+    });
+    drop.addEventListener('dragleave', function (e) {
+        e.preventDefault();
+        drop.classList.remove('is-drag-over');
+    
+    });
     drop.addEventListener('dragover', function (e) {
         e.preventDefault();
         e.dataTransfer.dropEffect = 'copy';
     });
     drop.addEventListener('drop', function (e) {
         e.preventDefault();
+        drop.classList.remove('is-drag-over');
         const list = e.dataTransfer.files;
         if (!list.length) {
             return;

@@ -98,6 +98,21 @@ form {
     align-items: center;
     color: var(--color-text-subtle);
     min-height: 72px;
+    transition:
+      background-color 0.12s ease,
+      border-color 0.12s ease,
+      box-shadow 0.12s ease,
+      color 0.12s ease;
+  }
+
+  /* :hover = pointer explore; .is-drag-over = file drag (set in JS — browsers expose no CSS pseudo for that). */
+  #upload-drop:hover,
+  #upload-drop.is-drag-over {
+    background-color: #eff6ff;
+    border-color: var(--color-accent);
+    border-style: solid;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.28);
+    color: var(--color-text-muted);
   }
 }
 
